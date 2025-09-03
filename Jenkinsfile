@@ -37,16 +37,11 @@ pipeline {
 
   post {
     always {
+      // publish test results so Jenkins shows them
       junit 'tests\\test-results.xml'
 
-      publishHTML(target: [
-        reportDir: 'htmlcov',
-        reportFiles: 'index.html',
-        reportName: 'Coverage Report',
-        keepAll: true
-      ])
-
-      recordCoverage(tools: [cobertura(pattern: 'coverage.xml')])
+      // save coverage + reports as build artifacts
+      archiveArtifacts artifacts: 'htmlcov/**, .coverage, coverage.xml, tests/test-results.xml', allowEmptyArchive: true
     }
   }
 }
